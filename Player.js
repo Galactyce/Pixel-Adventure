@@ -72,9 +72,8 @@ Player.prototype.update = function (delta) {
     this.rotation += 0.001;
   }
   if (this.dead && this.position.y > 800) {
-    
     powerupjs.GameStateManager.get(ID.game_state_playing).currentLevel.reset();
-    this.reset()
+    this.reset();
   }
 };
 
@@ -87,7 +86,7 @@ Player.prototype.handleInput = function () {
     if (this.onTheGround) this.playAnimation("run");
     if (this.velocity.x < -400) {
       this.velocity.x -= this.velocity.x + 400;
-      console.log(this.velocity.x)
+      console.log(this.velocity.x);
     }
     if (this.onWall && !this.onTheGround) {
       this.jumps = 0;
@@ -211,8 +210,7 @@ Player.prototype.handleCollisions = function () {
       if (tileType === TileType.normal || this.onTheGround) {
         this.position.y += depth.y + 1;
         if (!this.onTheGround) {
-  
-          this.velocity.y -= this.velocity.y - 200
+          this.velocity.y -= this.velocity.y - 200;
         }
       }
     }
@@ -249,10 +247,9 @@ Player.prototype.handleCollisions = function () {
         this.velocity.y = 0;
         this.velocity.addTo(traps.at(i).launchVelocity);
         traps.at(i).launch();
-      }
-      else if (traps.at(i).type === "saw") {
+      } else if (traps.at(i).type === "saw") {
         this.die();
-      } 
+      }
     }
   }
   for (var i = 0; i < traps.listLength; i++) {
@@ -302,45 +299,53 @@ Player.prototype.handleCollisions = function () {
       }
     }
   }
-  
+  for (var i = 0; i < traps.listLength; i++) {
+    if (traps.at(i).type === "brown_platform") {
+      var platform = traps.at(i)
+      if (this.boundingBox.intersects(platform.boundingBox)) {
+        this.velocity.y = platform.velocity.y;
+      }
+    }
+  }
   var boxes = powerupjs.GameStateManager.get(
     ID.game_state_playing
   ).currentLevel.find(ID.boxes);
 
-  for (var i=0; i<boxes.listLength; i++) {
-    if (this.boundingBox.intersects(boxes.at(i).boundingBox) && boxes.at(i).visible) {
+  for (var i = 0; i < boxes.listLength; i++) {
+    if (
+      this.boundingBox.intersects(boxes.at(i).boundingBox) &&
+      boxes.at(i).visible
+    ) {
+      var depth = this.boundingBox.calculateIntersectionDepth(
+        boxes.at(i).boundingBox
+      );
+      if (Math.abs(depth.x) < Math.abs(depth.y)) {
+        this.position.x += depth.x + 2 * Math.sign(depth.x);
+        this.onWall = true;
+        this.pushoffVelocity = 900 * Math.sign(depth.x);
 
-        var depth = this.boundingBox.calculateIntersectionDepth(boxes.at(i).boundingBox);
-        if (Math.abs(depth.x) < Math.abs(depth.y)) {
-            this.position.x += depth.x + 2 * Math.sign(depth.x);
-          this.onWall = true;
-          this.pushoffVelocity = 900 * Math.sign(depth.x);
-  
-          continue;
-        }
-        
-        if (
-          this.previousYPosition <= boxes.at(i).position.y
-        ) {
-          this.onWall = false;
-          this.jumps = 0;
-          boxes.at(i).hit('top')
-           this.onTheGround = true;
-           this.velocity.y = 0;
-           this.velocity.y -= 800;
-        }
-        if (this.previousYPosition > boxes.at(i).position.y + boxes.at(i).height) {
-          this.velocity.y += 400
-          boxes.at(i).hit('bottom');
-        }
-  
-          this.position.y += depth.y + 1;
-      
-        
-      
+        continue;
+      }
+
+      if (this.previousYPosition <= boxes.at(i).position.y) {
+        this.onWall = false;
+        this.jumps = 0;
+        boxes.at(i).hit("top");
+        this.onTheGround = true;
+        this.velocity.y = 0;
+        this.velocity.y -= 800;
+      }
+      if (
+        this.previousYPosition >
+        boxes.at(i).position.y + boxes.at(i).height
+      ) {
+        this.velocity.y += 400;
+        boxes.at(i).hit("bottom");
+      }
+
+      this.position.y += depth.y + 1;
     }
-  } 
+  }
 
   this.previousYPosition = this.position.y;
-
 };

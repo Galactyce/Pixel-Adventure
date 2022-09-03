@@ -99,7 +99,7 @@ Mushroom.prototype.handleCollisions = function () {
     ID.game_state_playing
   ).currentLevel.find(ID.player);
 
-  if (player.boundingBox.intersects(this.boundingBox) && this.visible) {
+  if (player.boundingBox.intersects(this.boundingBox) && this.visible && !player.dead) {
     if (player.previousYPosition <= this.position.y) {
       player.velocity.y = 0
       player.velocity.y -= 800

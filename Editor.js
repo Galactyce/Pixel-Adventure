@@ -167,6 +167,9 @@ Editor.prototype.draw = function () {
         this.gridPosition.x * this.cellWidth,
         this.gridPosition.y * this.cellHeight
       );
+      if (this.enemyTypes[this.currentTypeIndex] === 'plant') {
+        enemy.mirror = this.mirrored
+      }
       enemy.draw();
     } 
      else if (this.selected === "player") {
@@ -461,6 +464,19 @@ Editor.prototype.handleInput = function () {
           )
         )
       }
+      else if (this.enemyTypes[this.currentTypeIndex] === "fat_bird") {
+        var enemies = this.level.find(ID.enemies)
+        enemies.add(
+          new FatBird(
+            this.enemyTypes[this.currentTypeIndex],
+            new powerupjs.Vector2(
+              this.gridPosition.x * this.cellWidth,
+              this.gridPosition.y * this.cellHeight
+            ),
+            this.levelIndex
+          )
+        )
+      }
     }
       else if (this.selected === "player") {
         console.log(this.level);
@@ -538,7 +554,8 @@ Editor.prototype.handleInput = function () {
         }
       }
     }
-    if (this.specialMode !== 'sawChain')
+    
+    if (this.specialMode !== 'sawChain' )
     this.save();
   }
   if (powerupjs.Keyboard.keys[37].pressed) {

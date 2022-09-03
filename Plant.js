@@ -7,7 +7,10 @@ function Plant(type, position, currLevel, mirror) {
   this.currLevel = currLevel;
   this.playAnimation("idle");
   this.peas = new Array();
+  if (!mirror)
   this.shootVelocity = -500;
+  else 
+  this.shootVelocity = 500
   this.mirror = mirror;
   this.waitTime = Date.now();
   this.origin = new powerupjs.Vector2(this.width / 2, this.height / 2);
@@ -35,7 +38,7 @@ Plant.prototype.update = function (delta) {
 };
 
 Plant.prototype.shoot = function () {
-  if (Date.now() > this.waitTime + 1+000) {
+  if (Date.now() > this.waitTime + 800) {
     this.shootPea();
     this.playAnimation("shoot");
     this.waitTime = Date.now();
@@ -107,22 +110,43 @@ Plant.prototype.handleCollisions = function () {
     ID.game_state_playing
   ).currentLevel.find(ID.player);
 
+  if (!this.mirror) {
   for (var x = x_floor; x >= 0; x--) {
     if (tiles.getTileType(x, y_floor) === TileType.normal) {
       closestX = x * tiles.cellWidth;
       if (
         player.position.x > closestX &&
-        player.position.x < this.position.x &&
+        player.position.x < this.position.x && 
+        player.position.y <= this.position.y + 50&&
+        player.position.y > this.position.y - 200 &&        
         this.visible
       ) {
         // Calulates if the player is behind a wall
         this.shoot();
       }
-      break;
     }
   }
+}
 
-  if (player.boundingBox.intersects(this.boundingBox) && this.visible) {
+else if (this.mirror) {
+  for (var x = x_floor; x >= 0; x--) {
+    if (tiles.getTileType(x, y_floor) === TileType.normal) {
+      closestX = x * tiles.cellWidth;
+      if (
+        player.position.x < closestX &&
+        player.position.x > this.position.x && 
+        player.position.y <= this.position.y + 50&&
+        player.position.y > this.position.y - 200 &&        
+        this.visible
+      ) {
+        // Calulates if the player is behind a wall
+        this.shoot();
+      }
+    }
+  }
+}
+
+  if (player.boundingBox.intersects(this.boundingBox) && this.visible && !player.dead) {
     if (player.previousYPosition <= this.position.y) {
       player.velocity.y = 0;
       player.velocity.y -= 800;
@@ -159,7 +183,7 @@ Pea.prototype.update = function (delta) {
     ID.game_state_playing
   ).currentLevel.find(ID.player);
 
-  if (player.boundingBox.intersects(this.boundingBox) && this.visible) {
+  if (player.boundingBox.intersects(this.boundingBox) && this.visible && !player.dead) {
     player.die();
   }
   var tiles = powerupjs.GameStateManager.get(

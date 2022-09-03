@@ -106,6 +106,9 @@ powerupjs.Game.loadAssets = function () {
       on: loadSprite("Traps/Saw/On@8.png"),
       chain: loadSprite("Traps/Saw/Chain.png"),
     },
+    brown_platform: {
+      idle: loadSprite("Traps/Platforms/Brown Off.png")
+    }
   };
 
   sprites.enemies = {
@@ -117,6 +120,9 @@ powerupjs.Game.loadAssets = function () {
       idle: loadSprite("Enemies/Plant/Idle@11.png"),
       shoot: loadSprite("Enemies/Plant/Attack@8.png"),
       bullet: loadSprite("Enemies/Plant/Bullet.png"),
+    },
+    fat_bird: {
+      idle: loadSprite("Enemies/FatBird/Idle@8.png")
     },
   };
 };
