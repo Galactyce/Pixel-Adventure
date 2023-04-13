@@ -93,6 +93,7 @@ Player.prototype.handleInput = function () {
       this.fallSpeed = 25;
       this.playAnimation("wall_slide");
       this.velocity.y += 50;
+      this.pushoffVelocity = 1000
       if (this.velocity.y > 200) this.velocity.y = 200;
     } else if (!this.onWall && !this.onTheGround) {
       this.playAnimation("jump");
@@ -110,6 +111,7 @@ Player.prototype.handleInput = function () {
       this.playAnimation("wall_slide");
       this.velocity.y += 50;
       if (this.velocity.y > 200) this.velocity.y = 200;
+      this.pushoffVelocity = -1000;
     } else if (!this.onWall && !this.onTheGround) {
       this.playAnimation("jump");
     }
@@ -145,7 +147,7 @@ Player.prototype.handleInput = function () {
     if (this.onWall) {
       this.velocity.y = 0;
       this.velocity.y -= 1100;
-      this.velocity.x += this.pushoffVelocity;
+      this.velocity.x = this.pushoffVelocity;
       this.onWall = false;
     }
   }
@@ -242,6 +244,7 @@ Player.prototype.handleCollisions = function () {
         this.velocity.y = -1500;
         traps.at(i).visible = false;
       } else if (traps.at(i).type === "spikes") {
+        console.log(traps.at(i).boundingBox)
         this.die();
       } else if (traps.at(i).type === "trampoline") {
         this.velocity.y = 0;

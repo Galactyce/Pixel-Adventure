@@ -12,6 +12,19 @@ function Trampoline(type, position, currLevel, rotation) {
 
 Trampoline.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
 
+Trampoline.prototype.update = function(delta) {
+  powerupjs.AnimatedGameObject.prototype.update.call(this, delta);
+  if (this.rotation == Math.PI / 2) {
+    this.launchVelocity = new powerupjs.Vector2(1500, 0);
+  }
+  else if (this.rotation == Math.PI + Math.PI / 2) {
+    this.launchVelocity = new powerupjs.Vector2(-1500, 0);
+  }
+  else if (this.rotation == Math.PI) {
+    this.launchVelocity = new powerupjs.Vector2(1800, 0)
+  }
+}
+
 Trampoline.prototype.launch = function() {
   this.origin.y = this.height / 2;
   this.playAnimation('idle'); // Reset animation

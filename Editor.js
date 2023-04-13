@@ -92,6 +92,7 @@ Editor.prototype.update = function (delta) {
             this.currentColorIndex
           ]
         ];
+        console.log(this.blockTypes[this.currentTypeIndex])
     } else if (this.selected === "fruits") {
       this.current = this.fruitTypes[this.currentTypeIndex];
     }
@@ -572,6 +573,10 @@ Editor.prototype.handleInput = function () {
   }
   if (powerupjs.Keyboard.keys[38].pressed) {
     this.currentColorIndex++;
+
+   
+    // this.currentNumberSheetElements = block.numberSheetElements;
+    console.log(this.currentColorIndex)
     if (
       this.currentColorIndex >
       tileColorsByType[this.blockTypes[this.currentTypeIndex]].length - 1
@@ -582,6 +587,7 @@ Editor.prototype.handleInput = function () {
   }
   if (powerupjs.Keyboard.keys[40].pressed) {
     this.currentTypeIndex++;
+    this.currentColorIndex = 0
     if (this.currentTypeIndex > this.typeCount - 1) {
       this.currentTypeIndex = 0;
     }

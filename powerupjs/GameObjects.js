@@ -137,6 +137,11 @@ Object.defineProperty(SpriteGameObject.prototype, "boundingBox",
         if (this.rotation == Math.PI / 2 || this.rotation === Math.PI + Math.PI / 2) {
           return new powerupjs.Rectangle(leftTop.x, leftTop.y, this.height, this.width);
         }
+        else if (this.rotation == Math.PI) {
+          var leftTop = new powerupjs.Vector2(this.worldPosition.x - this.width, this.worldPosition.y - this.height);
+          return new powerupjs.Rectangle(leftTop.x, leftTop.y, this.width, this.height);
+
+        }
         else {
           return new powerupjs.Rectangle(leftTop.x, leftTop.y, this.width, this.height);
 
@@ -500,7 +505,7 @@ AnimatedGameObject.prototype.playAnimation = function(id) {
 }
 
 AnimatedGameObject.prototype.animationEnded = function() {
-  return !this.looping && this._sheetIndex >= this.sprite.nrSheetElements;
+  return !this.current.looping && this._sheetIndex >= this.sprite.nrSheetElements;
 }
 
 AnimatedGameObject.prototype.update = function(delta) {

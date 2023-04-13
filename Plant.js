@@ -111,7 +111,7 @@ Plant.prototype.handleCollisions = function () {
   ).currentLevel.find(ID.player);
 
   if (!this.mirror) {
-  for (var x = x_floor; x >= 0; x--) {
+  for (var x = x_floor; x > 0; x--) {
     if (tiles.getTileType(x, y_floor) === TileType.normal) {
       closestX = x * tiles.cellWidth;
       if (
@@ -123,13 +123,14 @@ Plant.prototype.handleCollisions = function () {
       ) {
         // Calulates if the player is behind a wall
         this.shoot();
+        break;
       }
     }
   }
 }
 
 else if (this.mirror) {
-  for (var x = x_floor; x >= 0; x--) {
+  for (var x = 0; x >= x_floor; x++) {
     if (tiles.getTileType(x, y_floor) === TileType.normal) {
       closestX = x * tiles.cellWidth;
       if (

@@ -124,7 +124,9 @@ powerupjs.Game.loadAssets = function () {
     fat_bird: {
       idle: loadSprite("Enemies/FatBird/Idle@8.png"),
       fall: loadSprite("Enemies/FatBird/Fall@4.png"),
-      ground: loadSprite("Enemies/FatBird/Ground@4.png")
+      ground: loadSprite("Enemies/FatBird/Ground@4.png"),
+      hit: loadSprite("Enemies/FatBird/Hit@5.png")
+
     },
   };
 };
